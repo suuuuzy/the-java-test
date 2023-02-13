@@ -19,10 +19,12 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
     int value = 1;
 
+    @Order(2)
     @FastTest
     @DisplayName("스터디 만들기 fast")
     void create_new_study() {
@@ -33,6 +35,7 @@ class StudyTest {
         assertThat(actual.getLimit()).isGreaterThan(0);
     }
 
+    @Order(1)
     @SlowTest
     @DisplayName("스터디 만들기 slow")
     void create_new_study_again() {
@@ -42,6 +45,7 @@ class StudyTest {
         System.out.println("create1");
     }
 
+    @Order(3)
     @DisplayName("테스트 반복")
     @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
     void repeatTest(RepetitionInfo repetitionInfo) {
@@ -88,12 +92,12 @@ class StudyTest {
     }
 
     @BeforeAll
-    void beforeAll() {
+    static void beforeAll() {
         System.out.println("before all");
     }
 
     @AfterAll
-    void afterAll() {
+    static void afterAll() {
         System.out.println("after all");
     }
 
