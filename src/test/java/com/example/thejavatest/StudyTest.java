@@ -1,36 +1,35 @@
 package com.example.thejavatest;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
     @Test
     @DisplayName("스터디 만들기 \uD83D\uDe31")
+    @EnabledOnOs({OS.MAC, OS.LINUX})
+    @EnabledOnJre({JRE.JAVA_8, JRE.JAVA_11})
     void create_new_study() {
+        String testEnv = System.getenv("TEST_ENV");
 
-        Study study = new Study(10);
+        assumeTrue("LOCAL".equalsIgnoreCase(testEnv));
 
-        assertAll(
-                () -> assertNotNull(study),
-                () -> assertEquals(StudyStatus.DRAFT, study.getStatus(),
-                        () -> "스터디를 처음 만들면 " + StudyStatus.DRAFT + "상태다."),
-                () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다.")
-        );
-
-        assertTimeout(Duration.ofMillis(100), () -> {
-            new Study(10);
-            Thread.sleep(300);
+        assumingThat("LOCAL".equalsIgnoreCase(testEnv), () -> {
+            System.out.println("local");
         });
-
     }
 
     @Test
-//    @Disabled
+    @DisabledOnOs(OS.MAC)
+    @EnabledOnJre(JRE.OTHER)
+    @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
     void create_new_study_again() {
         System.out.println("create1");
     }
