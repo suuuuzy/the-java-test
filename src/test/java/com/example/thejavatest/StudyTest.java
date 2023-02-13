@@ -17,8 +17,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
@@ -26,7 +26,7 @@ class StudyTest {
 
     @Order(2)
     @FastTest
-    @DisplayName("스터디 만들기 fast")
+//    @DisplayName("스터디 만들기 fast")
     void create_new_study() {
         System.out.println(this);
         System.out.println(value++);
@@ -36,6 +36,7 @@ class StudyTest {
     }
 
     @Order(1)
+    @Disabled
     @SlowTest
     @DisplayName("스터디 만들기 slow")
     void create_new_study_again() {
