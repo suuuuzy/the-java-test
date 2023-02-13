@@ -18,11 +18,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StudyTest {
+
+    int value = 1;
 
     @FastTest
     @DisplayName("스터디 만들기 fast")
     void create_new_study() {
+        System.out.println(this);
+        System.out.println(value++);
+
         Study actual = new Study(100);
         assertThat(actual.getLimit()).isGreaterThan(0);
     }
@@ -30,6 +36,9 @@ class StudyTest {
     @SlowTest
     @DisplayName("스터디 만들기 slow")
     void create_new_study_again() {
+        System.out.println(this);
+        System.out.println(value++);
+
         System.out.println("create1");
     }
 
@@ -79,12 +88,12 @@ class StudyTest {
     }
 
     @BeforeAll
-    static void beforeAll() {
+    void beforeAll() {
         System.out.println("before all");
     }
 
     @AfterAll
-    static void afterAll() {
+    void afterAll() {
         System.out.println("after all");
     }
 
