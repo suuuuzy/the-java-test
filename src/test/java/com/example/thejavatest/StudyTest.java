@@ -1,35 +1,23 @@
 package com.example.thejavatest;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.*;
 
-import java.time.Duration;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.junit.jupiter.api.Assumptions.assumingThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
     @Test
-    @DisplayName("스터디 만들기 \uD83D\uDe31")
-    @EnabledOnOs({OS.MAC, OS.LINUX})
-    @EnabledOnJre({JRE.JAVA_8, JRE.JAVA_11})
+    @DisplayName("스터디 만들기 fast")
+    @Tag("fast")
     void create_new_study() {
-        String testEnv = System.getenv("TEST_ENV");
-
-        assumeTrue("LOCAL".equalsIgnoreCase(testEnv));
-
-        assumingThat("LOCAL".equalsIgnoreCase(testEnv), () -> {
-            System.out.println("local");
-        });
+        Study actual = new Study(100);
+        assertThat(actual.getLimit()).isGreaterThan(0);
     }
 
     @Test
-    @DisabledOnOs(OS.MAC)
-    @EnabledOnJre(JRE.OTHER)
-    @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
+    @DisplayName("스터디 만들기 slow")
+    @Tag("slow")
     void create_new_study_again() {
         System.out.println("create1");
     }
