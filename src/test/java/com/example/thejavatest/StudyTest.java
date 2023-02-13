@@ -1,7 +1,9 @@
 package com.example.thejavatest;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -17,16 +19,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
-//@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@ExtendWith(FindSlowTestExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
     int value = 1;
 
+    @RegisterExtension
+    static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
+
     @Order(2)
     @FastTest
-//    @DisplayName("스터디 만들기 fast")
+    @DisplayName("스터디 만들기 fast")
     void create_new_study() {
         System.out.println(this);
         System.out.println(value++);
@@ -39,7 +43,9 @@ class StudyTest {
     @Disabled
     @SlowTest
     @DisplayName("스터디 만들기 slow")
-    void create_new_study_again() {
+    void create_new_study_again() throws InterruptedException {
+        Thread.sleep(1005L);
+
         System.out.println(this);
         System.out.println(value++);
 
