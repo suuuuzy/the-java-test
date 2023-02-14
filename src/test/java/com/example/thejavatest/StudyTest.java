@@ -1,5 +1,6 @@
 package com.example.thejavatest;
 
+import com.example.thejavatest.domain.Study;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -36,7 +37,7 @@ class StudyTest {
         System.out.println(value++);
 
         Study actual = new Study(100);
-        assertThat(actual.getLimit()).isGreaterThan(0);
+        assertThat(actual.getLimitCount()).isGreaterThan(0);
     }
 
     @Order(1)
@@ -71,7 +72,7 @@ class StudyTest {
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(ints = {10, 20, 40})
     void parameterizedTest2(@ConvertWith(StudyConverter.class) Study study) {
-        System.out.println(study.getLimit());
+        System.out.println(study.getLimitCount());
     }
 
     @DisplayName("테스트 반복 파라미터3")
