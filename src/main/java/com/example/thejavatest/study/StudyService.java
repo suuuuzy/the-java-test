@@ -27,7 +27,10 @@ public class StudyService {
             throw new IllegalArgumentException(String.format("Member doesn't exist for id: %s", memberId));
         }
 
-        return studyRepository.save(study);
+        Study newStudy = studyRepository.save(study);
+        memberService.notify(newStudy);
+        memberService.notify(member.get());
+        return newStudy;
     }
 
 }
