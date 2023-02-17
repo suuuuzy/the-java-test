@@ -6,7 +6,6 @@ import com.example.thejavatest.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -109,6 +108,28 @@ class StudyServiceTest {
         assertEquals(1L, study.getOwnerId());
         then(memberService).should(times(1)).notify(study);
         then(memberService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다른 사용자가 볼 수 있도록 스터디를 공개")
+    void openStudy() {
+        // Given
+        StudyService studyService = new StudyService(memberService, studyRepository);
+        Study study = new Study(10, "더 자바, 테스트");
+        assertNull(study.getOpenedDateTime());
+        // TODO studyRepository Mock 객체의 save 메소드 호출 시 study를 리턴하도록 만들기
+        given(studyRepository.save(study)).willReturn(study);
+
+        // When
+        studyService.openStudy(study);
+
+        // Then
+        // TODO study의 status가 OPENED로 변경됐는지 확인
+        assertEquals(StudyStatus.OPENED, study.getStatus());
+        // TODO study의 openedDataTime이 null이 아닌지 확인
+        assertNotNull(study.getOpenedDateTime());
+        // TODO memberService의 notify(study)가 호출됐는지 확인
+        then(memberService).should().notify(study);
     }
 
 }
